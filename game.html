@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shadow Sprint</title>
+<style>
+* { box-sizing: border-box; }
+body {
+    margin: 0;
+    background: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+#gameContainer {
+    width: 100%;
+    max-width: 680px;
+    margin: auto;
+    text-align: center;
+}
+canvas {
+    display: block;
+    width: 100%;
+    max-width: 640px;
+    height: auto;
+    margin: 10px auto;
+    background: #000;
+    border: 2px solid #fff;
+}
+#instructions {
+    font-size: 16px;
+    margin: 6px 0 12px;
+}
+button {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 10px 25px;
+    font-size: 16px;
+    cursor: pointer;
+}
+button:hover {
+    background: #fff;
+    color: #000;
+}
+</style>
+</head>
+<body>
+<div id="gameContainer">
+    <canvas id="gameCanvas" width="640" height="400"></canvas>
+    <div id="instructions">SPACE / TAP = Jump &nbsp; | &nbsp; E = Exit</div>
+    <button id="restartButton" type="button">Restart Game</button>
+</div>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+const groundY = 350;
+let playerX = 100;
+let playerY = groundY - 20;
+let velocity = 0;
+let isJumping = false;
+
+let obsX1 = 600;
+let obsX2 = 800;
+let obsCount = 1;
+
+let score = 0;
+let gameRunning = true;
+let speed = 10;
+
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function resetGame() {
+    playerX = 100;
+    playerY = groundY - 20;
+    velocity = 0;
+    isJumping = false;
+    obsX1 = 600;
+    obsX2 = 800;
+    obsCount = 1;
+    score = 0;
+    speed = 10;
+    gameRunning = true;
+}
+
+function resetObstacles() {
+    obsCount = randomNumber(1, 2);
+    obsX1 = 600;
+    obsX2 = 600 + randomNumber(40, 139);
+}
+
+function jump() {
+    if (!isJumping && gameRunning) {
+        velocity = -15;
+        isJumping = true;
+    }
+}
+
+document.addEventListener("keydown", function(event) {
+    if (event.code === "Space") {
+        event.preventDefault();
+        jump();
+    }
+    if (event.key === "e" || event.key === "E") {
+        gameRunning = false;
+    }
+});
+
+canvas.addEventListener("pointerdown", function() {
+    jump();
+});
+
+function drawPlayer() {
+    ctx.beginPath();
+    ctx.arc(playerX, playerY, 20, 0, Math.PI * 2);
+    ctx.fillStyle = "white";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawTriangle(x) {
+    ctx.beginPath();
+    ctx.moveTo(x, groundY);
+    ctx.lineTo(x + 20, groundY);
+    ctx.lineTo(x + 10, groundY - 20);
+    ctx.closePath();
+    ctx.fillStyle = "white";
+    ctx.fill();
+}
+
+function drawGround() {
+    ctx.beginPath();
+    ctx.moveTo(0, groundY);
+    ctx.lineTo(640, groundY);
+    ctx.strokeStyle = "white";
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function drawScore() {
+    ctx.fillStyle = "white";
+    ctx.font = "18px Arial";
+    ctx.fillText("Score: " + score, 10, 25);
+}
+
+function checkCollision(x) {
+    return Math.abs(playerX - x) < 25 &&
+           Math.abs(playerY - (groundY - 10)) < 25;
+}
+
+function drawGameOver() {
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+
+    ctx.font = "42px Arial";
+    ctx.fillText("GAME OVER", 320, 150);
+
+    ctx.font = "25px Arial";
+    ctx.fillText("FINAL SCORE: " + score, 320, 220);
+
+    ctx.font = "18px Arial";
+    ctx.fillText("Press Restart to play again", 320, 280);
+
+    ctx.textAlign = "left";
+}
+
+function update() {
+    if (!gameRunning) return;
+
+    velocity += 1;
+    playerY += velocity;
+
+    if (playerY >= groundY - 20) {
+        playerY = groundY - 20;
+        velocity = 0;
+        isJumping = false;
+    }
+
+    speed = 10 + Math.floor(score / 200);
+
+    obsX1 -= speed;
+    obsX2 -= speed;
+
+    if (obsX1 < 0) {
+        resetObstacles();
+    }
+
+    if (checkCollision(obsX1)) {
+        gameRunning = false;
+    }
+
+    if (obsCount === 2 && checkCollision(obsX2)) {
+        gameRunning = false;
+    }
+
+    score++;
+}
+
+function draw() {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    drawGround();
+    drawPlayer();
+    drawTriangle(obsX1);
+
+    if (obsCount === 2) {
+        drawTriangle(obsX2);
+    }
+
+    drawScore();
+
+    if (!gameRunning) {
+        drawGameOver();
+    }
+}
+
+function gameLoop() {
+    update();
+    draw();
+    requestAnimationFrame(gameLoop);
+}
+
+document.getElementById("restartButton").addEventListener("click", resetGame);
+
+draw();
+requestAnimationFrame(gameLoop);
+</script>
+</body>
+</html>
