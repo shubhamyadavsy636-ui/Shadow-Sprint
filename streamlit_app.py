@@ -11,9 +11,9 @@ st.set_page_config(
 st.title("🎮 Shadow Sprint")
 st.caption("Press SPACE to jump. Avoid the obstacles and beat your score.")
 
-html_file = Path(__file__).parent / "game.html"
+html_file = Path(__file__).parent / "index.html"
 
 with open(html_file, "r", encoding="utf-8") as f:
-    game_html = f.read()
+    index_html = f.read()
 
-components.html(game_html, height=500, scrolling=False)
+components.html(index_html, height=500, scrolling=False)
