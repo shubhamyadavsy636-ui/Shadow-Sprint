@@ -3,7 +3,7 @@
 A fast-paced browser-based game focused on quick reactions, movement, and survival. **Shadow Sprint** combines a C++ game implementation with a web-based interface to make the game easily accessible through a browser.
 
 ## 🚀 Live Demo
-**[Live Demo]([https://shadow-sprint-ten.vercel.app/](https://shadow-sprint-ten.vercel.app/?utm_source=chatgpt.com))**.
+[Live Demo]([https://shadow-sprint-ten.vercel.app/](https://shadow-sprint-ten.vercel.app/?utm_source=chatgpt.com)).
 
 ## 📌 About the Game
 
