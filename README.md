@@ -29,14 +29,12 @@ The project was developed as a combination of programming logic and web technolo
 | ---------------- | ------------------------------------- |
 | **C++**          | Core game logic                       |
 | **HTML5**        | Game structure and interface          |
-| **CSS3**         | Styling and visual design             |
-| **JavaScript**   | Browser-side interaction              |
 | **Git & GitHub** | Version control and source management |
 | **Vercel**       | Deployment and hosting                |
 
 ## 🎯 How to Play
 
-1. Open the **[Live Demo]([https://shadow-sprint-ten.vercel.app/](https://shadow-sprint-ten.vercel.app/?utm_source=chatgpt.com))**.
+1. Open the [(https://shadow-sprint-ten.vercel.app/?utm_source=chatgpt.com))]
 2. Start the game.
 3. Use the available controls to move the player.
 4. Avoid obstacles and survive for as long as possible.
@@ -44,7 +42,6 @@ The project was developed as a combination of programming logic and web technolo
 6. Restart the game and beat your previous score.
 
 
-> **Note:** Controls may vary depending on the current version of the game.
 
 ## 📂 Project Structure
 
@@ -52,11 +49,8 @@ The project was developed as a combination of programming logic and web technolo
 Shadow-Sprint/
 │
 ├── index.html          # Main web page
-├── style.css           # Game styling
-├── script.js           # Browser-side game interaction
 ├── game.cpp            # C++ game logic
 ├── Streamlit.py        # Streamlit interface (if used)
-├── assets/             # Images, sounds and other resources
 │
 └── README.md           # Project documentation
 ```
